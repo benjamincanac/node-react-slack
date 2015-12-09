@@ -1,0 +1,11 @@
+$purple1: #4D394B;
+$purple2: #ab9ba9;
+$purple3: #3e313c;
+
+$white: #fff;
+
+@include generate-color('purple1', $purple1);
+@include generate-color('purple2', $purple2);
+@include generate-color('purple3', $purple3);
+
+@include generate-color('white', $white);

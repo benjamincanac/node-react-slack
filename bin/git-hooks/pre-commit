@@ -1,0 +1,9 @@
+#!/bin/sh
+
+gulp git-check
+status=$?
+
+[ $status = 1 ] && echo "COMMIT CONTENT REJECTED" || echo "COMMIT CONTENT ACCEPTED"
+
+exit $status
+

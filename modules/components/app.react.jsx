@@ -12,5 +12,5 @@ import alt from '../alt';
 Iso.bootstrap((state, meta, node) => {
 	alt.bootstrap(state);
 
-	render(<Router history={history} routes={routes} locale="en" />, node);
+	render(<Router history={history} routes={routes} />, node);
 });

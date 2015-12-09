@@ -1,7 +1,5 @@
 import React from 'react';
-import request from 'superagent-bluebird-promise';
-
-var ENTER_KEY_CODE = 13;
+//import request from 'superagent-bluebird-promise';
 
 class ChannelMessagesComposer extends React.Component {
 	constructor(props) {
@@ -22,21 +20,32 @@ class ChannelMessagesComposer extends React.Component {
 	}
 
 	_onKeyDown(event) {
-		if (event.keyCode === ENTER_KEY_CODE) {
-			var text = this.state.text.trim();
-
-			if (!text) return;
-
-			request.post(`/api/channels/${this.props.channel.slug}/messages`)
-				.send({ message: {
-					text: text
-				} })
-				.then(() => {
-					this.setState({
-						text: ''
-					});
-				});
+		if (event.keyCode === 13) {
+			this._save(event);
 		}
+
+		//if (event.keyCode === ENTER_KEY_CODE) {
+		//	var text = this.state.text.trim();
+		//
+		//	if (!text) return;
+		//
+		//	request.post(`/api/channels/${this.props.channel.slug}/messages`)
+		//		.send({ message: {
+		//			text: text
+		//		} })
+		//		.then(() => {
+		//			this.setState({
+		//				text: ''
+		//			});
+		//		});
+		//}
+	}
+
+	_save(event) {
+		this.props.onSave(event.target.value);
+		this.setState({
+			text: ''
+		});
 	}
 
 	render() {
@@ -51,5 +60,9 @@ class ChannelMessagesComposer extends React.Component {
 		);
 	}
 }
+
+ChannelMessagesComposer.PropTypes = {
+	onSave: React.PropTypes.func.isRequired
+};
 
 export default ChannelMessagesComposer;

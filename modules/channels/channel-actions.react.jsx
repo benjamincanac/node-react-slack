@@ -4,7 +4,8 @@ import request from 'superagent-bluebird-promise';
 class ChannelActions {
 	constructor() {
 		this.generateActions(
-			'updateChannel'
+			'updateChannel',
+			'addMessage'
 		);
 	}
 
@@ -15,6 +16,14 @@ class ChannelActions {
 			.then((response) => {
 				this.actions.updateChannel(response.body.channel);
 			});
+	}
+
+	createMessage(channel, message) {
+		request.post(`/api/channels/${channel.slug}/messages`)
+				.send({ message: message })
+				.then(() => {
+					this.dispatch(message);
+				});
 	}
 }
 

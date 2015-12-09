@@ -13,6 +13,7 @@ function next(err) {
 mongo.connect(function (err) {
 	if (err) return next(err);
 
+	require('./modules/io')(http.server);
 	require('./modules/routes')(http.app);
 
 	async.each(

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var io = require('../io');
+
 import Channels from './channels-service';
 
 router.route('/channels')
@@ -54,7 +56,9 @@ router.route('/channels/:channelSlug/messages')
 
 				if (!channel) return res.status(404).send('channel-not-found');
 
-				res.json({ channel: channel });
+				io.io.to(channelSlug).emit('message', message);
+
+				res.json({ message: message });
 			});
 		}
 	);

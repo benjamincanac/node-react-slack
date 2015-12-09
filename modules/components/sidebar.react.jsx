@@ -23,7 +23,7 @@ class Sidebar extends React.Component {
 			<div id="sidebar-wrapper">
 				<ul className="sidebar-nav">
 					<li className="sidebar-brand">
-						<a href="#"><span className="fa fa-slack fa-lg padding-right-xs" />Slack React</a>
+						<Link to="/"><span className="fa fa-slack fa-lg padding-right-xs" />Slack React</Link>
 					</li>
 					<li className="text-purple2 text-uppercase">
 						Channels

@@ -28,14 +28,6 @@ module.exports = function (server) {
 		});
 
 		socket.on('channel:message', function (data) {
-			console.log(data);
-			//var message = {
-			//	text: data.message.text,
-			//	user: {
-			//		id: socket.id,
-			//		email:
-			//	}
-			//};
 			data.message.date = new Date();
 
 			Channels.postMessage(data.room.slug, data.message, function (err, channel) {
@@ -45,36 +37,24 @@ module.exports = function (server) {
 			});
 		});
 
-		socket.on('channel:join', function (room) {
-			log('Socket %s subscribed to %s', socket.id, room);
+		socket.on('channel:join', function (data) {
+			log('Socket %s subscribed to %s', socket.id, data.room);
 
-			io.to(room).emit('channel:join', { id: socket.id });
+			io.to(data.room).emit('channel:join', { user: data.user });
 
-			socket.join(room);
+			socket.join(data.room);
 		});
 
-		socket.on('channel:leave', function (room) {
-			log('Socket %s unsubscribed from %s', socket.id, room);
+		socket.on('channel:leave', function (data) {
+			log('Socket %s unsubscribed from %s', socket.id, data.room);
 
-			socket.leave(room, function (err) {
-				console.log('err:', err);
-			});
+			socket.leave(data.room);
 
-			io.to(room).emit('channel:leave', { id: socket.id });
+			io.to(data.room).emit('channel:leave', { user: data.user });
 		});
 
 		socket.on('disconnect', function () {
 			log('User disconnected. %s. Socket id %s', socket.id);
-
-			console.log(socket.rooms);
-
-			//var rooms = io.sockets.manager.roomClients[socket.id];
-			//
-			//for(var room in rooms) {
-			//	socket.leave(room);
-			//
-			//	io.to(room).emit('leave', { id: socket.id });
-			//}
 		});
 	});
 };

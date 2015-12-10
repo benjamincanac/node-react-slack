@@ -17,8 +17,7 @@ class ChannelMessages extends React.Component {
 											<Gravatar email={message.user.email} />
 										</div>
 										<div className="media-body">
-											<strong>{message.user.email}</strong>{' - '}<i><FormattedRelative value={new Date(message.date)} /></i>
-											<br />
+											<p className="margin-bottom-xs"><strong>{message.user.email}</strong>{' - '}<i><FormattedRelative value={new Date(message.date)} /></i></p>
 											{message.text}
 										</div>
 									</div>

@@ -34,9 +34,7 @@ class ChannelMessagesComposer extends React.Component {
 
 	render() {
 		return (
-			<div className="form-group">
-				<input className="form-control channel-input" name="message" value={this.state.text} onChange={this._onChange} onKeyDown={this._onKeyDown} autofocus />
-			</div>
+			<input className="form-control channel-input margin-none" name="message" value={this.state.text} onChange={this._onChange} onKeyDown={this._onKeyDown} placeholder="Enter your message" autofocus />
 		);
 	}
 }

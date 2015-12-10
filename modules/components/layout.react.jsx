@@ -13,7 +13,7 @@ class Layout extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.socket = io('http://www.node-react-slack.benjamins-mbp.neo9.lan');
+		this.socket = io('http://localhost:3000');
 	}
 
 	render() {
@@ -22,7 +22,7 @@ class Layout extends React.Component {
 				<div id="wrapper">
 					<Sidebar socket={this.socket} />
 					<div id="page-content-wrapper">
-						<div className="container-fluid">
+						<div className="container-fluid position-relative">
 							{this.props.children && React.cloneElement(this.props.children, {
 								socket: this.socket
 								})}

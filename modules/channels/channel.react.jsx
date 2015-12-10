@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import { FormattedDate } from 'react-intl';
 import connectToStores from 'alt/utils/connectToStores';
@@ -25,27 +26,39 @@ class Channel extends React.Component {
 		});
 
 		this.props.socket.on('channel:join', function (data) {
-			ChannelActions.addMessage({ text: `${data.id} just joined this channel` });
+			ChannelActions.addMessage({ text: `joined this channel`, user: data.user, date: new Date() });
 		});
 
 		this.props.socket.on('channel:leave', function (data) {
-			ChannelActions.addMessage({ text: `${data.id} just left this channel` });
+			ChannelActions.addMessage({ text: `left this channel`, user: data.user, date: new Date() });
 		});
 
-		this.props.socket.emit('channel:join', this.props.params.channelSlug);
+		this.props.socket.emit('channel:join', {
+			room: this.props.params.channelSlug,
+			user: SessionStore.getState().session
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.params !== nextProps.params) {
 			ChannelActions.getChannel(nextProps.params.channelSlug);
 
-			this.props.socket.emit('channel:leave', this.props.params.channelSlug);
-			this.props.socket.emit('channel:join', nextProps.params.channelSlug);
+			this.props.socket.emit('channel:leave', {
+				room: this.props.params.channelSlug,
+				user: SessionStore.getState().session
+			});
+			this.props.socket.emit('channel:join', {
+				room: nextProps.params.channelSlug,
+				user: SessionStore.getState().session
+			});
 		}
 	}
 
 	componentWillUnmount() {
-		this.props.socket.emit('channel:leave', this.props.params.channelSlug);
+		this.props.socket.emit('channel:leave', {
+			room: this.props.params.channelSlug,
+			user: SessionStore.getState().session
+		});
 	}
 
 	static getStores() {
@@ -78,7 +91,9 @@ class Channel extends React.Component {
 						<FormattedDate value={new Date(channel.date)} day="numeric" month="long" year="numeric" />
 					</h4>
 					<div className="channel">
-						<ChannelMessages messages={channel.messages} />
+						<div className="channel-content">
+							<ChannelMessages messages={channel.messages} />
+						</div>
 						<ChannelMessagesComposer onSave={this._onSave} />
 					</div>
 				</div>

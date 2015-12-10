@@ -25,6 +25,8 @@ router.route('/channels')
 			Channels.create(channel, function (err) {
 				if (err) return next(err);
 
+				io.io.emit('channel:new', channel);
+
 				res.json({ channel: channel });
 			});
 		}
@@ -41,24 +43,6 @@ router.route('/channels/:channelSlug')
 				if (!channel) return res.status(404).send('channel-not-found');
 
 				res.json({ channel: channel });
-			});
-		}
-	);
-
-router.route('/channels/:channelSlug/messages')
-	.post(
-		function (req, res, next) {
-			var channelSlug = req.params.channelSlug;
-			var message = req.body.message;
-
-			Channels.postMessage(channelSlug, message, function (err, channel) {
-				if (err) return next(err);
-
-				if (!channel) return res.status(404).send('channel-not-found');
-
-				io.io.to(channelSlug).emit('message', message);
-
-				res.json({ message: message });
 			});
 		}
 	);

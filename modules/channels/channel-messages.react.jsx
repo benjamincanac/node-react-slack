@@ -5,12 +5,12 @@ class ChannelMessages extends React.Component {
 		var messages = this.props.messages;
 
 		return (
-				<ul>
+				<ul className="channel-messages">
 					{
 						messages.map((message, index) => {
 							return (
 								<li key={index}>
-									{message.text}
+									{`${message.user ? message.user.id + ': ' : ''} ${message.text}`}
 								</li>
 								);
 							})

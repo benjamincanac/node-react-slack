@@ -13,28 +13,42 @@ class Channel extends React.Component {
 		super(props);
 
 		this._onSave = this._onSave.bind(this);
-
-		this.props.socket.on('message', function (message) {
-			ChannelActions.addMessage(message);
-		});
-
-		this.props.socket.on('join', function (data) {
-			ChannelActions.addMessage({ text: `${data.id} just joined this channel` });
-		});
-
-		this.props.socket.on('leave', function (data) {
-			ChannelActions.addMessage({ text: `${data.id} just left this channel` });
-		});
 	}
 
 	componentDidMount() {
 		ChannelActions.getChannel(this.props.params.channelSlug);
 
-		this.props.socket.emit('join', this.props.params.channelSlug);
+		console.log('componentDidMount');
+
+		this.props.socket.on('channel:message', function (message) {
+			console.log('channel:message', message);
+			ChannelActions.addMessage(message);
+		});
+
+		this.props.socket.on('channel:join', function (data) {
+			console.log('channel:join');
+			ChannelActions.addMessage({ text: `${data.id} just joined this channel` });
+		});
+
+		this.props.socket.on('channel:leave', function (data) {
+			console.log('channel:leave');
+			ChannelActions.addMessage({ text: `${data.id} just left this channel` });
+		});
+
+		this.props.socket.emit('channel:join', this.props.params.channelSlug);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.params !== nextProps.params) {
+			console.log('componentWillReceiveProps:', nextProps.params.channelSlug);
+			ChannelActions.getChannel(nextProps.params.channelSlug);
+			this.props.socket.emit('channel:leave', this.props.params.channelSlug);
+			this.props.socket.emit('channel:join', nextProps.params.channelSlug);
+		}
 	}
 
 	componentWillUnmount() {
-		this.props.socket.emit('leave', this.props.params.channelSlug);
+		this.props.socket.emit('channel:leave', this.props.params.channelSlug);
 	}
 
 	static getStores() {
@@ -46,7 +60,7 @@ class Channel extends React.Component {
 	}
 
 	_onSave(text) {
-		ChannelActions.createMessage(this.props.channel, {
+		ChannelActions.createMessage(this.props.socket, this.props.channel, {
 			text: text
 		});
 	}
@@ -63,10 +77,10 @@ class Channel extends React.Component {
 						{'This is the very beginning of the '}
 						<Link to={`/${channel.slug}`}>#{channel.name}</Link>
 						{' channel, which you created on '}
-						<FormattedDate value={new Date()} day="numeric" month="long" year="numeric" />
+						<FormattedDate value={new Date(channel.date)} day="numeric" month="long" year="numeric" />
 					</h4>
 					<ChannelMessages messages={channel.messages} />
-					<ChannelMessagesComposer channel={channel} onSave={this._onSave} />
+					<ChannelMessagesComposer onSave={this._onSave} />
 				</div>
 			);
 		} else {

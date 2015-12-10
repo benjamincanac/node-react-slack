@@ -27,8 +27,6 @@ router.route('/:channelSlug')
 			Channels.findBySlug(channelSlug, function (err, channel) {
 				if (err) return next(err);
 
-				if (!channel) return res.status(404).send('channel-not-found');
-
 				res.locals.data = {
 					ChannelStore: {
 						channel: channel

@@ -22,6 +22,10 @@ class Layout extends React.Component {
 		this.socket = io('http://www.node-react-slack.benjamins-mbp.neo9.lan');
 	}
 
+	componentDidMount() {
+
+	}
+
 	_onName(e) {
 		if (e.nativeEvent.keyCode !== 13) return;
 
@@ -34,7 +38,7 @@ class Layout extends React.Component {
 		return (
 			<IntlProvider locale="en">
 				<div id="wrapper">
-					<Sidebar />
+					<Sidebar socket={this.socket} />
 					<div id="page-content-wrapper">
 						<div className="container-fluid">
 							{this.props.children && React.cloneElement(this.props.children, {

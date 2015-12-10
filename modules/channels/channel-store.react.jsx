@@ -5,7 +5,7 @@ import ChannelActions from './channel-actions.react';
 class ChannelStore {
 	constructor() {
 		this.bindListeners({
-			updateChannel: ChannelActions.updateChannel,
+			getChannel: ChannelActions.getChannel,
 			addMessage: ChannelActions.addMessage
 		});
 
@@ -14,7 +14,7 @@ class ChannelStore {
 		};
 	}
 
-	updateChannel(channel) {
+	getChannel(channel) {
 		this.setState({
 			channel: channel
 		});

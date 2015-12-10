@@ -5,7 +5,8 @@ import ChannelsActions from './channels-actions.react';
 class ChannelsStore {
 	constructor() {
 		this.bindListeners({
-			updateChannels: ChannelsActions.updateChannels
+			getChannels: ChannelsActions.getChannels,
+			addChannel: ChannelsActions.addChannel
 		});
 
 		this.state = {
@@ -13,7 +14,17 @@ class ChannelsStore {
 		};
 	}
 
-	updateChannels(channels) {
+	getChannels(channels) {
+		this.setState({
+			channels: channels
+		});
+	}
+
+	addChannel(channel) {
+		var channels = this.state.channels;
+
+		channels.push(channel);
+
 		this.setState({
 			channels: channels
 		});

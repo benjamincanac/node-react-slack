@@ -23,22 +23,6 @@ class ChannelMessagesComposer extends React.Component {
 		if (event.keyCode === 13) {
 			this._save(event);
 		}
-
-		//if (event.keyCode === ENTER_KEY_CODE) {
-		//	var text = this.state.text.trim();
-		//
-		//	if (!text) return;
-		//
-		//	request.post(`/api/channels/${this.props.channel.slug}/messages`)
-		//		.send({ message: {
-		//			text: text
-		//		} })
-		//		.then(() => {
-		//			this.setState({
-		//				text: ''
-		//			});
-		//		});
-		//}
 	}
 
 	_save(event) {

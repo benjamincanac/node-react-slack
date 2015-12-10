@@ -4,17 +4,20 @@ import request from 'superagent-bluebird-promise';
 class ChannelsActions {
 	constructor() {
 		this.generateActions(
-			'updateChannels'
+			'addChannel'
 		);
 	}
 
 	getChannels() {
-		this.dispatch();
-
 		request.get('/api/channels')
 			.then((response) => {
-				this.actions.updateChannels(response.body.channels);
+				this.dispatch(response.body.channels);
 			});
+	}
+
+	createChannel(socket, channel) {
+		console.log('new',channel);
+		socket.emit('channel:new', { channel: channel });
 	}
 }
 

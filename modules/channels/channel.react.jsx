@@ -86,7 +86,7 @@ class Channel extends React.Component {
 					<h3 className="text-purple1 margin-none">{`#${channel.name}`}</h3>
 					<h4 className="roboto-light padding-bottom-lg">
 						{'This is the very beginning of the '}
-						<Link to={`/${channel.slug}`}>#{channel.name}</Link>
+						<Link to={`/${channel.slug}`}>{'#'}{channel.name}</Link>
 						{' channel, which you created on '}
 						<FormattedDate value={new Date(channel.date)} day="numeric" month="long" year="numeric" />
 					</h4>
@@ -116,8 +116,8 @@ class Channel extends React.Component {
 
 Channel.propTypes = {
 	channel: React.PropTypes.object,
-	params: React.PropTypes.object
+	params: React.PropTypes.object,
+	socket: React.PropTypes.object
 };
-
 
 export default connectToStores(Channel);

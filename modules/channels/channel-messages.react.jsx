@@ -34,5 +34,4 @@ ChannelMessages.propTypes = {
 	messages: React.PropTypes.array
 };
 
-
 export default ChannelMessages;

@@ -1,4 +1,6 @@
 import React from 'react';
+import Gravatar from 'react-gravatar';
+import { FormattedRelative } from 'react-intl';
 
 class ChannelMessages extends React.Component {
 	render() {
@@ -9,8 +11,17 @@ class ChannelMessages extends React.Component {
 					{
 						messages.map((message, index) => {
 							return (
-								<li key={index}>
-									{`${message.user ? message.user.id + ': ' : ''} ${message.text}`}
+								<li key={index} className="padding-bottom-sm">
+									<div className="media">
+										<div className="media-left media-middle">
+											<Gravatar email={message.user.email} />
+										</div>
+										<div className="media-body">
+											<strong>{message.user.email}</strong>{' - '}<i><FormattedRelative value={new Date(message.date)} /></i>
+											<br />
+											{message.text}
+										</div>
+									</div>
 								</li>
 								);
 							})

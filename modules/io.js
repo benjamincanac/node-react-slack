@@ -1,4 +1,5 @@
 var socket = require('socket.io');
+var slug = require('slug');
 
 var conf = require('./conf');
 var log = require('debug')(conf.name + ':io');
@@ -14,26 +15,33 @@ module.exports = function (server) {
 		socket.on('channel:new', function (data) {
 			var channel = {
 				name: data.channel.name,
-				slug: data.channel.name,
+				slug: slug(data.channel.name),
 				messages: [],
 				date: new Date()
 			};
 
-			Channels.create(channel, function () {
+			Channels.create(channel, function (err) {
+				if (err) return;
+
 				io.emit('channel:new', channel);
 			});
 		});
 
 		socket.on('channel:message', function (data) {
-			var message = {
-				text: data.message.text,
-				user: {
-					id: socket.id
-				}
-			};
+			console.log(data);
+			//var message = {
+			//	text: data.message.text,
+			//	user: {
+			//		id: socket.id,
+			//		email:
+			//	}
+			//};
+			data.message.date = new Date();
 
-			Channels.postMessage(data.room.slug, message, function (err, channel) {
-				io.to(data.room.slug).emit('channel:message', message);
+			Channels.postMessage(data.room.slug, data.message, function (err, channel) {
+				if (err) return;
+
+				io.to(data.room.slug).emit('channel:message', data.message);
 			});
 		});
 

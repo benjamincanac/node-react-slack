@@ -12,6 +12,7 @@ class ChannelActions {
 		request.get('/api/channels/' + channelSlug)
 			.then((response) => {
 				this.dispatch(response.body.channel);
+			}, () => {
 			});
 	}
 

@@ -84,7 +84,7 @@ gulp.task('clean', function () {
 
 gulp.task('styles', [], function () {
 	return gulp.src(paths.scss.src)
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass({ strictMath: true }).on('error', sass.logError))
 		.pipe(gulp.dest(dist + '/css'));
 });
 

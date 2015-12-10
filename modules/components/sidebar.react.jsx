@@ -3,6 +3,8 @@ import { Link } from 'react-router'
 import { Modal, Button } from 'react-bootstrap';
 import connectToStores from 'alt/utils/connectToStores';
 
+import SessionStore from './sessions/session-store.react';
+
 import ChannelsStore from '../channels/channels-store.react';
 import ChannelsActions from '../channels/channels-actions.react';
 
@@ -20,15 +22,26 @@ class Sidebar extends React.Component {
 
 		this._onSave = this._onSave.bind(this);
 		this._onChange = this._onChange.bind(this);
+
+		this.onChange = this.onChange.bind(this);
 	}
 
 	componentDidMount() {
+		SessionStore.listen(this.onChange);
+
 		ChannelsActions.getChannels();
 
 		this.props.socket.on('channel:new', function (channel) {
-			console.log('channel:new', channel);
 			ChannelsActions.addChannel(channel);
 		});
+	}
+
+	componentWillUnmount() {
+		SessionStore.unlisten(this.onChange);
+	}
+
+	onChange(state) {
+		this.setState(state);
 	}
 
 	close() {
@@ -58,11 +71,17 @@ class Sidebar extends React.Component {
 	}
 
 	static getStores() {
-		return [ChannelsStore];
+		return [SessionStore, ChannelsStore];
 	}
 
 	static getPropsFromStores() {
-		return ChannelsStore.getState();
+		var sessionState = SessionStore.getState();
+		var channelsState = ChannelsStore.getState();
+
+		return {
+			session: sessionState.session,
+			channels: channelsState.channels
+		}
 	}
 
 	render() {
@@ -73,7 +92,7 @@ class Sidebar extends React.Component {
 						<Link to="/"><span className="fa fa-slack fa-lg padding-right-xs" />Slack React</Link>
 					</li>
 					<li className="text-white">
-						<small>{`Connected as ${this.props.socket.id}`}</small>
+						<small>{this.props.session ? `Connected as ${this.props.session.email}` : 'You need to connect'}</small>
 					</li>
 					<li className="text-purple2 text-uppercase">
 						Channels

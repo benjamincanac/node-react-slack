@@ -13,25 +13,7 @@ class Layout extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			username: props.username
-		};
-
-		this._onName = this._onName.bind(this);
-
 		this.socket = io('http://www.node-react-slack.benjamins-mbp.neo9.lan');
-	}
-
-	componentDidMount() {
-
-	}
-
-	_onName(e) {
-		if (e.nativeEvent.keyCode !== 13) return;
-
-		this.setState({
-			username: e.target.value
-		});
 	}
 
 	render() {
@@ -44,8 +26,6 @@ class Layout extends React.Component {
 							{this.props.children && React.cloneElement(this.props.children, {
 								socket: this.socket
 								})}
-							{/*<WelcomeView username={this.state.username} _onName={this._onName} />
-							 <MainView username={this.state.username} />*/}
 						</div>
 					</div>
 				</div>
@@ -55,7 +35,7 @@ class Layout extends React.Component {
 }
 
 Layout.propTypes = {
-	username: React.PropTypes.string,
+	email: React.PropTypes.string,
 	children: React.PropTypes.element
 };
 

@@ -16,7 +16,6 @@ class ChannelsActions {
 	}
 
 	createChannel(socket, channel) {
-		console.log('new',channel);
 		socket.emit('channel:new', { channel: channel });
 	}
 }

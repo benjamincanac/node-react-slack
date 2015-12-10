@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { FormattedDate } from 'react-intl';
 import connectToStores from 'alt/utils/connectToStores';
 
+import SessionStore from '../components/sessions/session-store.react.jsx'
+
 import ChannelStore from './channel-store.react';
 import ChannelActions from './channel-actions.react';
 import ChannelMessages from './channel-messages.react';
@@ -18,20 +20,15 @@ class Channel extends React.Component {
 	componentDidMount() {
 		ChannelActions.getChannel(this.props.params.channelSlug);
 
-		console.log('componentDidMount');
-
 		this.props.socket.on('channel:message', function (message) {
-			console.log('channel:message', message);
 			ChannelActions.addMessage(message);
 		});
 
 		this.props.socket.on('channel:join', function (data) {
-			console.log('channel:join');
 			ChannelActions.addMessage({ text: `${data.id} just joined this channel` });
 		});
 
 		this.props.socket.on('channel:leave', function (data) {
-			console.log('channel:leave');
 			ChannelActions.addMessage({ text: `${data.id} just left this channel` });
 		});
 
@@ -40,8 +37,8 @@ class Channel extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.params !== nextProps.params) {
-			console.log('componentWillReceiveProps:', nextProps.params.channelSlug);
 			ChannelActions.getChannel(nextProps.params.channelSlug);
+
 			this.props.socket.emit('channel:leave', this.props.params.channelSlug);
 			this.props.socket.emit('channel:join', nextProps.params.channelSlug);
 		}
@@ -61,7 +58,8 @@ class Channel extends React.Component {
 
 	_onSave(text) {
 		ChannelActions.createMessage(this.props.socket, this.props.channel, {
-			text: text
+			text: text,
+			user: SessionStore.getState().session
 		});
 	}
 
@@ -73,14 +71,16 @@ class Channel extends React.Component {
 			data = (
 				<div>
 					<h3 className="text-purple1 margin-none">{`#${channel.name}`}</h3>
-					<h4 className="roboto-light">
+					<h4 className="roboto-light padding-bottom-lg">
 						{'This is the very beginning of the '}
 						<Link to={`/${channel.slug}`}>#{channel.name}</Link>
 						{' channel, which you created on '}
 						<FormattedDate value={new Date(channel.date)} day="numeric" month="long" year="numeric" />
 					</h4>
-					<ChannelMessages messages={channel.messages} />
-					<ChannelMessagesComposer onSave={this._onSave} />
+					<div className="channel">
+						<ChannelMessages messages={channel.messages} />
+						<ChannelMessagesComposer onSave={this._onSave} />
+					</div>
 				</div>
 			);
 		} else {

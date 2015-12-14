@@ -120,7 +120,7 @@ gulp.task('start', function () {
 });
 
 gulp.task('react', function () {
-	return browserify({ entries: paths.react, extensions: [ '.jsx' ], debug: env === 'development' })
+	return browserify({ entries: paths.react, extensions: [ '.jsx' ] })
 		.on('error', handleError)
 		.transform(babelify)
 		.on('error', handleError)

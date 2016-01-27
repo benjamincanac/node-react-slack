@@ -9,9 +9,7 @@ class ChannelsStore {
 			addChannel: ChannelsActions.addChannel
 		});
 
-		this.state = {
-			channels: []
-		};
+		this.state = {};
 	}
 
 	getChannels(channels) {
@@ -21,7 +19,7 @@ class ChannelsStore {
 	}
 
 	addChannel(channel) {
-		var channels = this.state.channels;
+		var channels = this.state.channels || [];
 
 		channels.push(channel);
 

@@ -61,11 +61,11 @@ module.exports = function (app) {
 		});
 	});
 
-	//app.get('/', function (req, res, next) {
-	//	res.locals.data = {
-	//		HomeStore: { title: 'test' }
-	//	};
-	//	next();
+	//app.get('*', function (req, res, next) {
+	//res.locals.data = {
+	//	HomeStore: { title: 'test' }
+	//};
+	//next();
 	//});
 
 	[

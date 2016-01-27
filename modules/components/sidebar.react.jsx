@@ -103,12 +103,12 @@ class Sidebar extends React.Component {
 					{
 						this.props.channels.map((channel) => {
 							return (
-							<li key={channel._id}>
-								<Link to={`/${channel.slug}`}># {channel.name}</Link>
-							</li>
-								);
-							})
-						}
+								<li key={channel._id}>
+									<Link to={`/${channel.slug}`}># {channel.name}</Link>
+								</li>
+							);
+						})
+					}
 				</ul>
 
 				<Modal show={this.state.showModal} onHide={this.close}>

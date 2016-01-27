@@ -62,11 +62,17 @@ class Channel extends React.Component {
 	}
 
 	static getStores() {
-		return [ChannelStore];
+		return [SessionStore, ChannelStore];
 	}
 
 	static getPropsFromStores() {
-		return ChannelStore.getState();
+		var sessionState = SessionStore.getState();
+		var channelState = ChannelStore.getState();
+
+		return {
+			session: sessionState.session,
+			channel: channelState.channel
+		}
 	}
 
 	_onSave(text) {
@@ -78,7 +84,12 @@ class Channel extends React.Component {
 
 	render() {
 		var data;
+		var composer;
 		var channel = this.props.channel;
+
+		if (this.props.session) {
+			composer = <ChannelMessagesComposer onSave={this._onSave} />;
+		}
 
 		if (channel) {
 			data = (
@@ -94,7 +105,7 @@ class Channel extends React.Component {
 						<div className="channel-content">
 							<ChannelMessages messages={channel.messages} />
 						</div>
-						<ChannelMessagesComposer onSave={this._onSave} />
+						{composer}
 					</div>
 				</div>
 			);

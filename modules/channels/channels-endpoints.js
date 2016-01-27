@@ -3,21 +3,19 @@ var router = express.Router();
 
 import Channels from './channels-service';
 
-router.route('/')
-	.get(
-		function (req, res, next) {
-			Channels.find({}, function (err, channels) {
-				if (err) return next(err);
+router.get('*', function (req, res, next) {
+	console.log('ici');
+	Channels.find({}, function (err, channels) {
+		if (err) return next(err);
 
-				res.locals.data = {
-					ChannelsStore: {
-						channels: channels
-					}
-				};
-				return next();
-			});
-		}
-	);
+		res.locals.data = {
+			ChannelsStore: {
+				channels: channels
+			}
+		};
+		return next();
+	});
+});
 
 router.route('/:channelSlug')
 	.get(
@@ -27,10 +25,8 @@ router.route('/:channelSlug')
 			Channels.findBySlug(channelSlug, function (err, channel) {
 				if (err) return next(err);
 
-				res.locals.data = {
-					ChannelStore: {
-						channel: channel
-					}
+				res.locals.data.ChannelStore = {
+					channel: channel
 				};
 				return next();
 			});

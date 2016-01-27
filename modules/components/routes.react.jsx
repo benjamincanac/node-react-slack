@@ -19,7 +19,7 @@ function sessionResolver(nextState, replaceState) {
 var routes = (
 	<Route path="/" component={Layout}>
 		<IndexRoute component={Home} />
-		<Route path="/:channelSlug" component={Channel} onEnter={sessionResolver} />
+		<Route path="/:channelSlug" component={Channel} />
 		<Route path="*" component={NotFound} />
 	</Route>
 );

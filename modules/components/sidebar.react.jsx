@@ -101,7 +101,7 @@ class Sidebar extends React.Component {
 						</span>
 					</li>
 					{
-						this.props.channels.map((channel) => {
+						this.props.channels && this.props.channels.map((channel) => {
 							return (
 								<li key={channel._id}>
 									<Link to={`/${channel.slug}`}># {channel.name}</Link>

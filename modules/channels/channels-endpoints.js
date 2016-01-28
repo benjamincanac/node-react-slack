@@ -4,7 +4,6 @@ var router = express.Router();
 import Channels from './channels-service';
 
 router.get('*', function (req, res, next) {
-	console.log('ici');
 	Channels.find({}, function (err, channels) {
 		if (err) return next(err);
 

@@ -1,4 +1,4 @@
-#Node Express React Skeleton
+#Node React Slack
 
 ##Configuration
 
